@@ -16,4 +16,9 @@ contract MyToken is ERC20, Ownable {
     function burn(uint256 amount) public {
         _burn(msg.sender, amount);
     }
+
+    function transfer(address to, uint256 amount) public{
+        _transfer(msg.sender, to, amount);
+        return true;
+    }
 }
