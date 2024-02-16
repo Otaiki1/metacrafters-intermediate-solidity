@@ -4,7 +4,7 @@ This Solidity program is a simple ERC20 token contract that demonstrates the bas
 
 ## Description
 
-This program is a contract written in Solidity, a programming language used for developing smart contracts on the Ethereum blockchain. The contract has functions for minting, burning, and transferring tokens. This program serves as a simple and straightforward introduction to Solidity programming and can be used as a stepping stone for more complex projects in the future.
+This program is a contract written in Solidity, a programming language used for developing smart contracts on the Ethereum blockchain. The contract has functions for minting, burning, and transferring tokens. This program serves as a simple and straightforward introduction to Solidity programming and can be used as a stepping stone for more complex projects in the future. It utilizes openZeppelin
 
 ## Getting Started
 
@@ -18,52 +18,11 @@ Once you are on the Remix website, create a new file by clicking on the "+" icon
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-contract ERC20 {
-    uint public totalSupply;
-    mapping(address => uint) public balanceOf;
-    mapping(address => mapping(address => uint)) public allowance;
-    string public name = "OtaikiToken";
-    string public symbol = "OTAIKI";
-    uint8 public decimals = 18;
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-		event Transfer(address indexed from, address indexed to, uint value);
-    event Approval(address indexed owner, address indexed spender, uint value);
-
-    function transfer(address recipient, uint amount) external returns (bool) {
-        balanceOf[msg.sender] -= amount;
-        balanceOf[recipient] += amount;
-        emit Transfer(msg.sender, recipient, amount);
-        return true;
-    }
-
-    function approve(address spender, uint amount) external returns (bool) {
-        allowance[msg.sender][spender] = amount;
-        emit Approval(msg.sender, spender, amount);
-        return true;
-    }
-
-    function transferFrom(
-        address sender,
-        address recipient,
-        uint amount
-    ) external returns (bool) {
-        allowance[sender][msg.sender] -= amount;
-        balanceOf[sender] -= amount;
-        balanceOf[recipient] += amount;
-        emit Transfer(sender, recipient, amount);
-        return true;
-    }
-
-    function mint(uint amount) external {
-        balanceOf[msg.sender] += amount;
-        totalSupply += amount;
-        emit Transfer(address(0), msg.sender, amount);
-    }
-
-    function burn(uint amount) external {
-        balanceOf[msg.sender] -= amount;
-        totalSupply -= amount;
-        emit Transfer(msg.sender, address(0), amount);
+contract OtaikiToken is ERC20 {
+    constructor(uint256 initialSupply) ERC20("OtaikiToken", "OTAIKI") {
+        _mint(msg.sender, initialSupply);
     }
 }
 
